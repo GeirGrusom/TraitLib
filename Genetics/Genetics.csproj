@@ -1,7 +1,44 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  <Target Name="SetReleaseNotes" BeforeTargets="Build">
+    <ReadLinesFromFile File="ReleaseNotes.txt">
+      <Output TaskParameter="Lines" ItemName="ReleaseNoteLines"/>
+    </ReadLinesFromFile>
+    <PropertyGroup>
+      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+      <Authors>Henning Moe</Authors>
+      <Company />
+      <Product />
+      <Description>Genetic implementation</Description>
+      <Copyright>© 2018 Henning Moe</Copyright>
+      <PackageReleaseNotes>@(ReleaseNoteLines->'%(Identity)', '%0a%0d')</PackageReleaseNotes>
+    </PropertyGroup>
+  </Target>
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard1.3</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Genetics.xml</DocumentationFile>
   </PropertyGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard1.3'">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0"></PackageReference>
+  </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="../stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitVersionTask" Version="4.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+    
 </Project>
