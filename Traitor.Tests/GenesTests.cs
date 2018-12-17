@@ -1,4 +1,4 @@
-﻿namespace Genetics.Tests
+﻿namespace Traitor.Tests
 {
     using System;
     using System.Collections.Generic;

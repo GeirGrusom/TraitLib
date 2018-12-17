@@ -1,4 +1,4 @@
-﻿namespace Genetics.Tests
+﻿namespace Traitor.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,7 @@
     [TestFixture(TestOf = typeof(GeneCombiner<,>))]
     public class GeneCombinerTests
     {
-        private static readonly Func<IEnumerable<int>, Trait<int, int>> Throw = inp => throw new InvalidOperationException();
+        private static readonly Func<IEnumerable<int>, NovelResult<int, int>> Throw = inp => throw new InvalidOperationException();
 
         [Test]
         public void Combine_LeftValue_ReturnsLeftParentTrait()
@@ -40,7 +40,7 @@
         [Test]
         public void Combine_NovelTrait_ReturnsNovelTrait()
         {
-            var combiner = new GeneCombiner<int, int>(() => 1, inp => new Trait<int, int>(2, (TraitValue<int>)0), Mutators.Increment, Rational.Zero, Rational.Identity);
+            var combiner = new GeneCombiner<int, int>(() => 1, inp => new NovelResult<int, int>(new Trait<int, int>(2, (TraitValue<int>)0), NovelResultType.Add), Mutators.Increment, Rational.Zero, Rational.Identity);
 
             var leftParent = new Genes<int, int>(new[] { new Trait<int, int>(0, (TraitValue<int>)0) });
             var rightParent = new Genes<int, int>(new[] { new Trait<int, int>(1, (TraitValue<int>)1) });

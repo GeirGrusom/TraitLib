@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Genetics", "Genetics\Genetics.csproj", "{F4BF0059-2645-4E4A-A827-13AE6F6DEDF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Traitor", "Traitor\Traitor.csproj", "{F4BF0059-2645-4E4A-A827-13AE6F6DEDF0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Genetics.Tests", "Genetics.Tests\Genetics.Tests.csproj", "{1DA782D0-D186-4FDD-9BBF-A7BBA6711A4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Traitor.Tests", "Traitor.Tests\Traitor.Tests.csproj", "{1DA782D0-D186-4FDD-9BBF-A7BBA6711A4D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloWorldExample", "HelloWorldExample\HelloWorldExample.csproj", "{786ED11C-ABFB-45FE-BD64-C2ABD68A7523}"
 EndProject

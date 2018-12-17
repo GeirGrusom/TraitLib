@@ -2,7 +2,7 @@
 // Copyright (c) Henning Moe. All rights reserved.
 // </copyright>
 
-namespace Genetics
+namespace Traitor
 {
     using System;
     using System.Collections.Generic;
@@ -17,14 +17,14 @@ namespace Genetics
         where TKey : IEquatable<TKey>
         where TValue : struct, IEquatable<TValue>, IComparable<TValue>, IFormattable
     {
+        [ThreadStatic]
+        private static Random randomSource;
+
         private readonly Func<int> rand;
-        private readonly Func<IEnumerable<TKey>, Trait<TKey, TValue>> traitFactory;
+        private readonly Func<IEnumerable<TKey>, NovelResult<TKey, TValue>> traitFactory;
         private readonly Mutator<TValue> mutationValue;
         private readonly int mutationChance;
         private readonly int novelTraitChance;
-
-        [ThreadStatic]
-        private static Random randomSource;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneCombiner{TKey, TValue}"/> class.
@@ -35,7 +35,7 @@ namespace Genetics
         /// <param name="mutationChance">Mutation chance as a rational number</param>
         /// <param name="novelTraitChance">Novel trait chance as a rational number</param>
         /// <exception cref="OverflowException">Thrown if either mutation chance or novel trait chance ends up being less than int.MaxValue</exception>
-        public GeneCombiner(Func<int> random, Func<IEnumerable<TKey>, Trait<TKey, TValue>> traitFactory, Mutator<TValue> mutationValue, Rational mutationChance, Rational novelTraitChance)
+        public GeneCombiner(Func<int> random, Func<IEnumerable<TKey>, NovelResult<TKey, TValue>> traitFactory, Mutator<TValue> mutationValue, Rational mutationChance, Rational novelTraitChance)
         {
             this.rand = random;
             this.traitFactory = traitFactory;
@@ -51,7 +51,7 @@ namespace Genetics
         /// <param name="mutationValue">Function used to mutate a trait value with common functions defined in <see cref="Mutators"/></param>
         /// <param name="mutationChance">Mutation chance as a rational number</param>
         /// <param name="novelTraitChance">Novel trait chance as a rational number</param>
-        public GeneCombiner(Func<IEnumerable<TKey>, Trait<TKey, TValue>> traitFactory, Mutator<TValue> mutationValue, Rational mutationChance, Rational novelTraitChance)
+        public GeneCombiner(Func<IEnumerable<TKey>, NovelResult<TKey, TValue>> traitFactory, Mutator<TValue> mutationValue, Rational mutationChance, Rational novelTraitChance)
             : this(NextRandom, traitFactory, mutationValue, mutationChance, novelTraitChance)
         {
         }
@@ -65,6 +65,44 @@ namespace Genetics
         public GeneCombiner(Mutator<TValue> mutationValue, Rational mutationChance)
             : this(inp => throw new NotSupportedException(), mutationValue, mutationChance, Rational.Zero)
         {
+        }
+
+        /// <summary>
+        /// Creates a random set of genes using the provided novel trait factory
+        /// </summary>
+        /// <param name="minTraits">Specifies the minimum number of traits in each new gene set</param>
+        /// <param name="maxTraits">Specifies the maximum number of traits in each new gene set</param>
+        /// <returns>An unending set of genes</returns>
+        public IEnumerable<Genes<TKey, TValue>> CreateRandomSet(int minTraits, int maxTraits)
+        {
+            while (true)
+            {
+                var newTraits = new List<Trait<TKey, TValue>>();
+                var traits = NextRandom(minTraits, maxTraits + 1);
+                for (int i = 0; i < maxTraits - (maxTraits - minTraits); ++i)
+                {
+                    NovelResult<TKey, TValue> newTrait;
+                    int tries = 0;
+                    do
+                    {
+                        newTrait = this.traitFactory(newTraits.Select(x => x.Key));
+
+                        if (++tries == 10)
+                        {
+                            goto DontAdd;
+                        }
+                    }
+                    while (newTrait.Type != NovelResultType.Add);
+
+                    newTraits.Add(newTrait.Result);
+
+                    DontAdd:
+                    {
+                    }
+                }
+
+                yield return new Genes<TKey, TValue>(newTraits);
+            }
         }
 
         /// <summary>
@@ -115,7 +153,14 @@ namespace Genetics
             if (this.novelTraitChance > 0 && this.rand() % this.novelTraitChance == 0)
             {
                 var newTrait = this.traitFactory(results.Select(x => x.Key));
-                results.Add(newTrait);
+                if (newTrait.Type == NovelResultType.Add && !results.Any(x => x.Key.Equals(newTrait.Result.Key)))
+                {
+                    results.Add(newTrait.Result);
+                }
+                else if (newTrait.Type == NovelResultType.Remove)
+                {
+                    results.RemoveAll(x => x.Key.Equals(newTrait.Result.Key));
+                }
             }
 
             return new Genes<TKey, TValue>(results);
@@ -129,6 +174,16 @@ namespace Genetics
             }
 
             return randomSource.Next();
+        }
+
+        private static int NextRandom(int min, int max)
+        {
+            if (randomSource is null)
+            {
+                randomSource = new Random();
+            }
+
+            return randomSource.Next(min, max);
         }
 
         private static int Max(int initial, Genes<TKey, TValue>[] counts)

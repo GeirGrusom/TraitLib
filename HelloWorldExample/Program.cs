@@ -8,10 +8,19 @@ namespace HelloWorldExample
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using Genetics;
+    using Traitor;
 
     /// <summary>
-    /// Program entrypoint for Hello World
+    /// Program entrypoint for Hello World.
+    ///
+    /// Note that this is an example program.
+    /// It is not:
+    ///  * Production quality (whatever that means for an Hello World application)
+    ///  * Ideal implementation
+    ///
+    /// You can probably get a lot fewer generations with better genetic algorithms
+    /// but this library is not intended to be used to solve problems using genetic algorithms.
+    /// It's intended to be used as a way to inherit traits across generations in a game.
     /// </summary>
     internal class Program
     {

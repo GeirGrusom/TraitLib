@@ -1,16 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  
   <Target Name="SetReleaseNotes" BeforeTargets="Build">
     <ReadLinesFromFile File="ReleaseNotes.txt">
-      <Output TaskParameter="Lines" ItemName="ReleaseNoteLines"/>
+      <Output TaskParameter="Lines" ItemName="ReleaseNoteLines" />
     </ReadLinesFromFile>
     <PropertyGroup>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
       <Authors>Henning Moe</Authors>
       <Company />
       <Product />
-      <Description>Genetic implementation</Description>
+      <Description>Genetic trait implementation for game development</Description>
       <Copyright>© 2018 Henning Moe</Copyright>
       <PackageReleaseNotes>@(ReleaseNoteLines->'%(Identity)', '%0a%0d')</PackageReleaseNotes>
     </PropertyGroup>
@@ -40,5 +38,4 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-    
 </Project>

@@ -2,7 +2,7 @@
 // Copyright (c) Henning Moe. All rights reserved.
 // </copyright>
 
-namespace Genetics
+namespace Traitor
 {
     using System;
     using System.Collections.Generic;

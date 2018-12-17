@@ -2,7 +2,7 @@
 // Copyright (c) Henning Moe. All rights reserved.
 // </copyright>
 
-namespace Genetics
+namespace Traitor
 {
     using System;
     using System.Collections;
@@ -110,14 +110,14 @@ namespace Genetics
         /// <inheritdoc />
         public bool Equals(Genes<TKey, TValue> other)
         {
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
             if (other is null || this.Count != other.Count)
             {
                 return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
             }
 
             for (int i = 0; i < this.Count; ++i)
