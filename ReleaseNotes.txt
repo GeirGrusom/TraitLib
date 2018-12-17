@@ -1,7 +1,0 @@
-# Genetics release notes
-
-## v1.0.0 Initial Release
-
-* Implemented Genes which is a set of genes
-* Implemented GeneCombiner which produce a new set of genes from one or more other genes.
-* Unit test coverage

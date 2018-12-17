@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <DocumentationFile>$(OutputDir)HelloWorldExample.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\HelloWorldExample.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 

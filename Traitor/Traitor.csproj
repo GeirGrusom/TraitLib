@@ -7,7 +7,7 @@
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
       <Authors>Henning Moe</Authors>
       <Company />
-      <Product />
+      <Product>Traitor</Product>
       <Description>Genetic trait implementation for game development</Description>
       <Copyright>© 2018 Henning Moe</Copyright>
       <PackageReleaseNotes>@(ReleaseNoteLines->'%(Identity)', '%0a%0d')</PackageReleaseNotes>
@@ -18,6 +18,12 @@
     <TargetFrameworks>netstandard2.0;netstandard1.3</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Genetics.xml</DocumentationFile>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/GeirGrusom/TraitLib/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/GeirGrusom/TraitLib</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/GeirGrusom/TraitLib</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>traits genetics</PackageTags>
+    <Copyright>© 2018 Henning Moe</Copyright>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard1.3'">

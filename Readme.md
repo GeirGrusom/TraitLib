@@ -1,4 +1,4 @@
-# Genetics
+# Traitor trait library
 
 This project aims to provide a simple algorithm neatly packaged and usable for genetic algorithms though primarily aimed at game development.
 
